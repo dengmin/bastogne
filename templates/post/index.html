@@ -1,0 +1,69 @@
+{% extends '../base.html' %}
+{% block title %}{{ post['title'] }}{% end %}
+{% block main %}
+    <div class="post">
+        <h1><a href="/post/{{ post['id'] }}">{{ post['title'] }}</a>
+            <small>
+                <span>
+                    <a href="{{ post['alt'] }}" title="去豆瓣查看" target="_blank">
+                        <img src="{{ static_url('image/douban/favicon_24x24.png') }}">
+                    </a>
+                    {{ post['rating'] }}
+                </span>&nbsp
+                <span>
+                    {% for genre in post['genres'] %}
+                        <a href="/movie?genres={{ genre }}">{{ genre }}</a>
+                    {% end %}
+                </span>
+            </small>
+        </h1>
+        <hr>
+        <div class="row">
+            <div class="col-md-5">
+                <img class="col-md-12" src="{{ post['image'] }}">
+            </div>
+            <div class="col-md-7">
+                <p>片名： {{ post['title'] }}</p>
+                <p>年代： <a href="/movie?year={{ post['year'] }}">{{ post['year'] }}</a></p>
+                <p>导演:&nbsp&nbsp
+                    {% for director in post['directors'] %}
+                        <a href="/movie?directors={{ director }}">{{ director }}</a>
+                    {% end %}
+                </p>
+                <p>主演:&nbsp&nbsp
+                    {% for cast in post['casts'] %}
+                        &nbsp<a href="/movie?casts={{ cast }}">{{ cast }}</a>
+                    {% end %}
+                </p>
+                <p>简介： {{ post['summary'] }}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="download" id="download">
+            <h4><span class="glyphicon glyphicon-download-alt"></span>下载</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>格式</th><th>大小</th><th>下载 <span class="text-danger"><small>(请将链接复制到迅雷等下载工具)</small></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for download in post['download'] %}
+                        <tr>
+                            <td>{{ download['format'] }}</td>
+                            <td>{{ download['size'] }}</td>
+                            <td><a href="{{ download['href'] }}">{{ download['name'] }}</a></td>
+                        </tr>
+                    {% end %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr>
+    {% module ChangYan() %}
+    {% module SameKindMovie(handler.get_same_kind_movie('genres', post)) %}
+{% end %}
+{% block side %}
+    {% module Genres(side['genres']) %}
+    {% module Year() %}
+{% end %}

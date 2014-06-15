@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% include 'public/head.html' %}
+</head>
+<body>
+{% include public/header.html %}
+<div id="wrap" class="container">
+    {% block container %}
+        <div id="main" class="col-md-8 col-sm-7">
+            {% block main %}
+            {% end %}
+        </div>
+        <div id="side" class="col-md-4 col-sm-5">
+            {% block side %}
+                {% module Genres(side['genres']) %}
+                {% module Year() %}
+                {% module HotMovie(handler.get_hot_movie()) %}
+            {% end %}
+        </div>
+    {% end %}
+</div>
+{% include 'public/footer.html' %}
+</body>
+</html>
